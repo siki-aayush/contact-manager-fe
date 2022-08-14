@@ -1,0 +1,32 @@
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.card {
+  background-color: white;
+  box-shadow: 0 0 50px #8080809e;
+  width: 475px;
+  height: 675px;
+  flex-direction: column;
+}
+
+.card__title {
+  font-size: var(--large);
+  margin-bottom: 45px;
+  margin-left: -5px;
+}
+
+.card__title span {
+  color: var(--primary);
+}
+
+.card__footer a {
+  font-weight: var(--bold);
+  color: var(--primary);
+}
+
+.login label {
+  font-size: var(--small);
+}
