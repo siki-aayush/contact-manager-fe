@@ -8,18 +8,30 @@ import { LocalStorageKeys } from "../enum/localStorageKeys.enum";
 export const addUserLoginToLocalStorage = (
   isLoggedIn: string,
   accessToken: string,
-  refreshToken: string
+  refreshToken: string,
+  userId: string
 ) => {
   localStorage.setItem(LocalStorageKeys.IS_LOGGED_IN, isLoggedIn);
   localStorage.setItem(LocalStorageKeys.accessToken, accessToken);
   localStorage.setItem(LocalStorageKeys.refreshToken, refreshToken);
+  localStorage.setItem(LocalStorageKeys.userId, userId);
 };
 
+/**
+ * Gets the token from the local storage
+ */
 export const getUserTokensFromLocalStorage = () => {
   return {
     accessToken: localStorage.getItem(LocalStorageKeys.accessToken),
     refreshToken: localStorage.getItem(LocalStorageKeys.refreshToken),
   };
+};
+
+/**
+ * Gets the user id from the local storage
+ */
+export const getUserIdFromLocalStorage = () => {
+  return localStorage.getItem(LocalStorageKeys.userId);
 };
 
 /**
