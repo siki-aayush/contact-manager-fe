@@ -1,34 +1,33 @@
-import { Avatar, List } from "antd";
+import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+import { Avatar, Button, List, Typography } from "antd";
 import axios from "axios";
 import VirtualList from "rc-virtual-list";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Contact } from "../../interfaces/Contact";
 
 import "./ContactList.css";
 
-interface UserItem {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  photograph: string;
-  address: string;
-  is_favouriate: boolean;
-}
-
-const ContainerHeight = 300;
-
 const ContactList: React.FC = () => {
-  const [data, setData] = useState<UserItem[]>([]);
+  const [data, setData] = useState<Contact[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [endOfPage, setEndOfPage] = useState<Boolean>(false);
+
+  const containerHeight = 850;
+  const itemHeight = 50;
+
+  const { Title } = Typography;
 
   useEffect(() => {
-    console.log("hello i'm running", page);
     axios
       .get("/contacts", { params: { page } })
       .then((res) => {
-        console.log("inside", res);
-
-        setData((prev) => [...prev, ...res.data.data]);
+        const newData = res.data.data;
+        if (newData.length !== 0) {
+          setData((prev) => [...prev, ...newData]);
+        } else {
+          setEndOfPage(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -38,31 +37,82 @@ const ContactList: React.FC = () => {
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (
       e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
-      ContainerHeight
+        containerHeight &&
+      !endOfPage
     ) {
       setPage((prevPage) => prevPage + 1);
     }
   };
 
+  const updateContactFavourite = async (item: Contact) => {
+    try {
+      const res = await axios.patch(`/contacts/${item.id}`, {
+        id: item.id,
+        is_favourite: !item.is_favourite,
+      });
+      if (res.data.data) {
+        const updatedData = data.map((contact) => {
+          if (contact.id === item.id) {
+            contact.is_favourite = !contact.is_favourite;
+          }
+          return contact;
+        });
+
+        setData(updatedData);
+      }
+    } catch (error) {}
+  };
+
+  const onDeleteHandler = async (id: string) => {
+    try {
+      const res = await axios.delete(`/contacts/${id}`);
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (data) {
     return (
-      <List className="contacts">
+      <List className="contacts" header={<Title>Contacts</Title>}>
         <VirtualList
           data={data}
-          height={ContainerHeight}
-          itemHeight={47}
+          height={containerHeight}
+          itemHeight={itemHeight}
           itemKey="id"
           onScroll={onScroll}
           className="contacts__list"
         >
-          {(item: UserItem) => (
-            <List.Item key={Date.now()}>
+          {(item: Contact) => (
+            <List.Item
+              key={item.id}
+              actions={[
+                item.is_favourite ? (
+                  <HeartFilled
+                    style={{ fontSize: "20px", color: "#bf2c21" }}
+                    onClick={() => updateContactFavourite(item)}
+                  />
+                ) : (
+                  <HeartOutlined
+                    style={{ fontSize: "20px" }}
+                    onClick={() => updateContactFavourite(item)}
+                  />
+                ),
+                <Link to={`/contacts/update/${item.id}`}>
+                  <Button>Edit</Button>
+                </Link>,
+                <Button onClick={() => onDeleteHandler(item.id)}>
+                  Delete
+                </Button>,
+              ]}
+            >
               <List.Item.Meta
                 avatar={<Avatar src={item.photograph} />}
                 title={<a href="https://ant.design">{item.name}</a>}
-                description={item.email}
+                description={item.phone}
               />
-              <div>Content</div>
             </List.Item>
           )}
         </VirtualList>
