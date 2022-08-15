@@ -5,6 +5,7 @@ import ContactList from "./pages/contacts/ContactList";
 import { Login } from "./pages/login/Login";
 
 import "./App.css";
+import ContactUpdate from "./pages/contacts/ContactUpdate";
 
 function App() {
   jwtInterceptorProvider();
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/contacts" element={<ContactList />} />
         <Route path="/contacts/add" element={<ContactCreate />} />
+        <Route path="/contacts/update/:id" element={<ContactUpdate />} />
       </Routes>
     </BrowserRouter>
   );

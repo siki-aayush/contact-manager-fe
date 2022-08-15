@@ -12,7 +12,6 @@ const requestInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig => {
 };
 
 const requestErrorInterceptor = (error: AxiosError) => {
-  console.log("error detected!!", error.message);
   return Promise.reject(error);
 };
 
@@ -25,7 +24,6 @@ const responseErrorInterceptor = async (
   reqInterceptorId: number
 ) => {
   const prevReq: RespConf = error.config;
-  console.log("error detected!!", prevReq);
   if (error.response?.status === 401 && !prevReq?.sent) {
     await refreshAccessToken();
     axios.interceptors.request.eject(reqInterceptorId);

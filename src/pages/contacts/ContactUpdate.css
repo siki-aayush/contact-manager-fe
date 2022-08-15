@@ -1,12 +1,12 @@
-.contact-create {
+.contact-update {
   flex-direction: column;
   height: 100vh;
 }
 
-.contact-create .contact-create__title {
+.contact-update .contact-update__title {
   margin-bottom: 40px;
 }
 
-.contact-create label {
+.contact-update label {
   margin-right: 14px !important;
 }
