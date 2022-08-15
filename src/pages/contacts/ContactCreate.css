@@ -1,0 +1,12 @@
+.contact-form {
+  flex-direction: column;
+  height: 100vh;
+}
+
+.contact-form .contact-form__title {
+  margin-bottom: 40px;
+}
+
+.contact-form label {
+  margin-right: 14px !important;
+}
