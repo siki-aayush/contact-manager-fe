@@ -1,6 +1,7 @@
 import { Button, Form, Input } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { loginDetail } from "../../interfaces/loginDetail";
 import { addUserLoginToLocalStorage } from "../../utils/localstorage.util";
 
@@ -8,6 +9,7 @@ import "./LoginForm.css";
 
 export const LoginForm: React.FC = () => {
   const [msg] = useState<string>("");
+  const navigate = useNavigate();
 
   const onFinish = async (values: loginDetail) => {
     try {
@@ -20,6 +22,7 @@ export const LoginForm: React.FC = () => {
           res.data.data.refreshToken,
           res.data.data.user.id
         );
+        navigate("/contacts");
       }
     } catch (error) {
       console.log(error);
