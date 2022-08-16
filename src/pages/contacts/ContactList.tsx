@@ -5,22 +5,31 @@ import VirtualList from "rc-virtual-list";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Contact } from "../../interfaces/Contact";
+import { useSelector } from "react-redux";
+import { getUserIdFromLocalStorage } from "../../utils/localstorage.util";
 
 import "./ContactList.css";
+import { RootState } from "../../redux/store";
 
 const ContactList: React.FC = () => {
   const [data, setData] = useState<Contact[]>([]);
   const [page, setPage] = useState<number>(1);
   const [endOfPage, setEndOfPage] = useState<Boolean>(false);
 
+  // const id = getUserIdFromLocalStorage();
+  const id = useSelector((state: RootState) => state.user.id);
   const containerHeight = 850;
   const itemHeight = 50;
 
   const { Title } = Typography;
 
+  /**
+   * Fetches the contacts from the API
+   * whenever the page number changes
+   */
   useEffect(() => {
     axios
-      .get("/contacts", { params: { page } })
+      .post("/contacts", { id }, { params: { page } })
       .then((res) => {
         const newData = res.data.data;
         if (newData.length !== 0) {
@@ -32,8 +41,12 @@ const ContactList: React.FC = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [page]);
+  }, [page, id]);
 
+  /**
+   *  Loads more contact data
+   * @param {React.UIEvent } e
+   * */
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (
       e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
@@ -44,6 +57,10 @@ const ContactList: React.FC = () => {
     }
   };
 
+  /**
+   * Deletes contact
+   * @param {Contact} item
+   * */
   const updateContactFavourite = async (item: Contact) => {
     try {
       const res = await axios.patch(`/contacts/${item.id}`, {
@@ -63,6 +80,10 @@ const ContactList: React.FC = () => {
     } catch (error) {}
   };
 
+  /**
+   * Deletes contact
+   * @param {string} id
+   * */
   const onDeleteHandler = async (id: string) => {
     try {
       const res = await axios.delete(`/contacts/${id}`);

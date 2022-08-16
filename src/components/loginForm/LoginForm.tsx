@@ -1,27 +1,34 @@
 import { Button, Form, Input } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginDetail } from "../../interfaces/loginDetail";
+import { setIsUserLoggedIn } from "../../reducers";
+import { setId } from "../../reducers/userSlice";
 import { addUserLoginToLocalStorage } from "../../utils/localstorage.util";
 
 import "./LoginForm.css";
 
 export const LoginForm: React.FC = () => {
   const [msg] = useState<string>("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onFinish = async (values: loginDetail) => {
     try {
       const res = await axios.post("/login", values);
+      const data = res.data.data;
 
-      if (res.data.data) {
+      if (data) {
         addUserLoginToLocalStorage(
           "true",
-          res.data.data.accessToken,
-          res.data.data.refreshToken,
-          res.data.data.user.id
+          data.accessToken,
+          data.refreshToken,
+          data.user.id
         );
+        dispatch(setIsUserLoggedIn(true));
+        dispatch(setId(data.user.id));
         navigate("/contacts");
       }
     } catch (error) {
