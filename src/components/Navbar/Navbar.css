@@ -1,0 +1,8 @@
+.navbar__logo {
+  color: var(--primary);
+}
+
+.navbar {
+  padding: 10px 30px 10px 30px !important;
+  border-bottom: 0 !important;
+}
