@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Contact } from "../../interfaces/Contact";
 import { useSelector } from "react-redux";
-import { getUserIdFromLocalStorage } from "../../utils/localstorage.util";
 
 import "./ContactList.css";
 import { RootState } from "../../redux/store";
