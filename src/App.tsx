@@ -16,11 +16,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AuthRoute />}>
+        <Route path="/contacts" element={<AuthRoute />}>
           <Route path="/contacts" element={<ContactList />} />
           <Route path="/contacts/add" element={<ContactCreate />} />
           <Route path="/contacts/update/:id" element={<ContactUpdate />} />
         </Route>
+        <Route
+          path="/"
+          element={<Navigate to={isLoggedIn ? "/contacts" : "/login"} />}
+        />
         <Route
           path="/login"
           element={isLoggedIn ? <Navigate to="/contacts" /> : <Login />}
