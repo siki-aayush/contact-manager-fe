@@ -7,11 +7,14 @@ import {
 import { Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { clearUserLoginFromLocalStorage } from "../../utils/localstorage.util";
+import { useDispatch } from "react-redux";
 
 import "./Navbar.css";
+import { setIsUserLoggedIn } from "../../reducers";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   return (
     <Menu
@@ -38,6 +41,7 @@ const Navbar = () => {
         <span
           onClick={() => {
             clearUserLoginFromLocalStorage();
+            dispatch(setIsUserLoggedIn(false));
             navigate("/login");
           }}
         >

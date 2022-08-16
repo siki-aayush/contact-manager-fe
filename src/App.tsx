@@ -3,16 +3,30 @@ import { jwtInterceptorProvider } from "./axios/jwt.interceptor";
 import ContactCreate from "./pages/contacts/ContactCreate";
 import ContactList from "./pages/contacts/ContactList";
 import { Login } from "./pages/login/Login";
-import { getUserLoginFromLocalStorage } from "./utils/localstorage.util";
+import {
+  getUserIdFromLocalStorage,
+  getUserLoginFromLocalStorage,
+} from "./utils/localstorage.util";
 
 import "./App.css";
 import ContactUpdate from "./pages/contacts/ContactUpdate";
+import { useDispatch, useSelector } from "react-redux";
 import Register from "./pages/register/Register";
 import AuthRoute from "./hoc/AuthRoute";
+import { setId, setIsUserLoggedIn } from "./reducers";
+import { RootState } from "./redux/store";
 
 function App() {
   jwtInterceptorProvider();
-  const isLoggedIn = getUserLoginFromLocalStorage();
+  // const isLoggedIn = getUserLoginFromLocalStorage();
+  const dispatch = useDispatch();
+
+  dispatch(setIsUserLoggedIn(getUserLoginFromLocalStorage()));
+  dispatch(setId(getUserIdFromLocalStorage()));
+
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.auth.isUserLoggedIn
+  );
   return (
     <BrowserRouter>
       <Routes>
