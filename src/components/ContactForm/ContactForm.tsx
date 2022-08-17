@@ -56,7 +56,9 @@ const ContactForm = (props: ContactFormInterface) => {
     formData.append("photograph", values.photograph[0].originFileObj);
     formData.append("is_favourite", `${favourite}`);
     formData.append("user_id", user_id as string);
-    formData.append("id", props.id as string);
+    if (props.update) {
+      formData.append("id", props.id as string);
+    }
 
     try {
       const res = await axios(URL, {
