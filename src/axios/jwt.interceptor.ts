@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { BASE_URL } from "../constants/common";
 import { refreshAccessToken } from "../utils/acesstoken.util";
 import { getUserTokensFromLocalStorage } from "../utils/localstorage.util";
 
@@ -36,7 +35,7 @@ const responseErrorInterceptor = async (
 };
 
 export const jwtInterceptorProvider = () => {
-  axios.defaults.baseURL = BASE_URL;
+  axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
   axios.defaults.headers.post["Content-Type"] = "application/json";
   const reqInterceptorId = axios.interceptors.request.use(
     requestInterceptor,
