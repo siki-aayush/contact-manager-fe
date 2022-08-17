@@ -44,7 +44,7 @@ const ContactForm = (props: ContactFormInterface) => {
 
   const URL = props.update
     ? `/contacts/${props.initialValues?.id}`
-    : "/contacts";
+    : "/contacts/add";
   const METHOD = props.update ? "PUT" : "POST";
 
   const onFinish = async (values: any) => {
