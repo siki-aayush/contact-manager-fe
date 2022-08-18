@@ -12,10 +12,11 @@ const ContactUpdate = () => {
   const { id } = useParams();
   const { Title } = Typography;
   const [contact, setContact] = useState<Contact>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(`/contacts/${id}`)
       .then((res) => {
@@ -30,6 +31,7 @@ const ContactUpdate = () => {
           },
         };
         setContact(initialValues);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log("error", error);

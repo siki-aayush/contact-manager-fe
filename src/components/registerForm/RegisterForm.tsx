@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../interfaces/register";
 import axios from "axios";
 
+interface registerFormInterface {
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+}
 /**
  * RegisterForm.
  * Renders the registration form
  */
-const RegisterForm = () => {
+const RegisterForm = ({ setIsLoading }: registerFormInterface) => {
   const [confirmPassErr, setConfirmPassErr] = useState<string>("");
 
   const navigate = useNavigate();
@@ -41,6 +44,8 @@ const RegisterForm = () => {
       return;
     }
 
+    setIsLoading(false);
+
     try {
       await axios("/register", {
         method: "POST",
@@ -50,6 +55,7 @@ const RegisterForm = () => {
         },
       });
 
+      setIsLoading(false);
       navigate("/login");
     } catch (err) {
       console.log(err);
