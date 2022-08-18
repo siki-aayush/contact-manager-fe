@@ -41,7 +41,6 @@ const ContactForm = (props: ContactFormInterface) => {
   const [favourite, setFavourite] = React.useState(false);
   const user_id = getUserIdFromLocalStorage();
   const navigate = useNavigate();
-  console.log(props.initialValues);
 
   const URL = props.update
     ? `/contacts/${props.initialValues?.id}`

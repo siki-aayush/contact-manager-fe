@@ -18,7 +18,7 @@ const ContactList: React.FC = () => {
   const [endOfPage, setEndOfPage] = useState<Boolean>(false);
 
   // const id = getUserIdFromLocalStorage();
-  const id = useSelector((state: RootState) => state.user.id);
+  const id = useSelector((state: RootState) => state.user.id) || 1;
   const containerHeight = 850;
   const itemHeight = 50;
 
@@ -29,6 +29,10 @@ const ContactList: React.FC = () => {
    * whenever the page number changes
    */
   useEffect(() => {
+    getData(id, page);
+  }, [page, id]);
+
+  const getData = (id: number, page: number) => {
     setIsLoading(true);
     axios
       .post("/contacts", { id }, { params: { page } })
@@ -44,7 +48,7 @@ const ContactList: React.FC = () => {
         console.log(err);
       });
     setIsLoading(false);
-  }, [page, id]);
+  };
 
   /**
    *  Loads more contact data
@@ -71,14 +75,10 @@ const ContactList: React.FC = () => {
         is_favourite: !item.is_favourite,
       });
       if (res.data.data) {
-        const updatedData = data.map((contact) => {
-          if (contact.id === item.id) {
-            contact.is_favourite = !contact.is_favourite;
-          }
-          return contact;
-        });
-
-        setData(updatedData);
+        // Refreshes the data
+        setData([]);
+        setPage(1);
+        getData(id, 1);
       }
     } catch (error) {}
   };
