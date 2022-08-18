@@ -18,7 +18,7 @@ export const Login: React.FC = () => {
           <div className="card__footer">
             Don't have an account?{" "}
             <span>
-              <Link to="#">Sign up for free</Link>
+              <Link to="/register">Sign up for free</Link>
             </span>
           </div>
         </div>
