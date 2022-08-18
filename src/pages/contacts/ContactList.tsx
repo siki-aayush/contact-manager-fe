@@ -9,10 +9,12 @@ import { useSelector } from "react-redux";
 
 import "./ContactList.css";
 import { RootState } from "../../redux/store";
+import Loading from "../../hoc/Loading";
 
 const ContactList: React.FC = () => {
   const [data, setData] = useState<Contact[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [endOfPage, setEndOfPage] = useState<Boolean>(false);
 
   // const id = getUserIdFromLocalStorage();
@@ -27,6 +29,7 @@ const ContactList: React.FC = () => {
    * whenever the page number changes
    */
   useEffect(() => {
+    setIsLoading(true);
     axios
       .post("/contacts", { id }, { params: { page } })
       .then((res) => {
@@ -40,6 +43,7 @@ const ContactList: React.FC = () => {
       .catch((err) => {
         console.log(err);
       });
+    setIsLoading(false);
   }, [page, id]);
 
   /**
@@ -94,8 +98,8 @@ const ContactList: React.FC = () => {
     }
   };
 
-  if (data) {
-    return (
+  return (
+    <Loading isLoading={isLoading}>
       <List className="contacts" header={<Title>Contacts</Title>}>
         <VirtualList
           data={data}
@@ -137,10 +141,8 @@ const ContactList: React.FC = () => {
           )}
         </VirtualList>
       </List>
-    );
-  } else {
-    return <div>Loading...</div>;
-  }
+    </Loading>
+  );
 };
 
 export default ContactList;

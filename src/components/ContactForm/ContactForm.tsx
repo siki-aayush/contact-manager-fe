@@ -2,7 +2,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Upload } from "antd";
 import CountryPhoneInput from "antd-country-phone-input";
 import axios from "axios";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Contact } from "../../interfaces/Contact";
 import { getUserIdFromLocalStorage } from "../../utils/localstorage.util";
 
@@ -11,6 +11,13 @@ import { useNavigate } from "react-router-dom";
 import en from "world_countries_lists/data/countries/en/world.json";
 
 import "./ContactForm.css";
+
+interface ContactFormInterface {
+  initialValues?: Contact;
+  id?: string;
+  update: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+}
 
 const layout = {
   labelCol: { span: 7 },
@@ -29,12 +36,6 @@ const validateMessages = {
   },
 };
 /* eslint-enable no-template-curly-in-string */
-
-interface ContactFormInterface {
-  initialValues?: Contact;
-  id?: string;
-  update: boolean;
-}
 
 const ContactForm = (props: ContactFormInterface) => {
   const [favourite, setFavourite] = React.useState(false);
@@ -60,6 +61,8 @@ const ContactForm = (props: ContactFormInterface) => {
       formData.append("id", props.id as string);
     }
 
+    props.setIsLoading(true);
+
     try {
       const res = await axios(URL, {
         method: METHOD,
@@ -77,6 +80,8 @@ const ContactForm = (props: ContactFormInterface) => {
       console.log(error);
     }
   };
+
+  props.setIsLoading(false);
 
   const normFile = (e: any) => {
     console.log("Upload event:", e);
