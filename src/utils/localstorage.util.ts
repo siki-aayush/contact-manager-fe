@@ -44,11 +44,7 @@ export const getUserLoginFromLocalStorage = (): boolean => {
   if (loggedInStatus === null) {
     return false;
   } else {
-    if (`${loggedInStatus}` === "true") {
-      return true;
-    } else {
-      return false;
-    }
+    return JSON.parse(loggedInStatus);
   }
 };
 

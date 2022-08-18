@@ -1,17 +1,19 @@
+import { Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import { Contact } from "../../interfaces/Contact";
-import { Typography } from "antd";
 
+import Loading from "../../hoc/Loading";
 import "./ContactUpdate.css";
 
 const ContactUpdate = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [contact, setContact] = useState<Contact>();
   const { Title } = Typography;
+  const [contact, setContact] = useState<Contact>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -36,12 +38,19 @@ const ContactUpdate = () => {
   }, [id, navigate]);
 
   return (
-    <div className="contact-update center">
-      <Title className="contact-update__title">Update Contact</Title>
-      {contact && (
-        <ContactForm initialValues={contact} update={true} id={id as string} />
-      )}
-    </div>
+    <Loading isLoading={isLoading}>
+      <div className="contact-update center">
+        <Title className="contact-update__title">Update Contact</Title>
+        {contact && (
+          <ContactForm
+            initialValues={contact}
+            update={true}
+            id={id as string}
+            setIsLoading={setIsLoading}
+          />
+        )}
+      </div>
+    </Loading>
   );
 };
 

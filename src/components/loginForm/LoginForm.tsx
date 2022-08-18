@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import axios from "axios";
-import React, { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginDetail } from "../../interfaces/loginDetail";
@@ -10,12 +10,17 @@ import { addUserLoginToLocalStorage } from "../../utils/localstorage.util";
 
 import "./LoginForm.css";
 
-export const LoginForm: React.FC = () => {
+export const LoginForm = ({
+  setIsLoading,
+}: {
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [msg] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onFinish = async (values: loginDetail) => {
+    setIsLoading(true);
     try {
       const res = await axios.post("/login", values);
       const data = res.data.data;
@@ -34,6 +39,7 @@ export const LoginForm: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const onFinishFailed = () => {
