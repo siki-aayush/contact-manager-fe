@@ -134,7 +134,7 @@ const ContactList: React.FC = () => {
             >
               <List.Item.Meta
                 avatar={<Avatar src={item.photograph} />}
-                title={<a href="https://ant.design">{item.name}</a>}
+                title={item.name}
                 description={item.phone}
               />
             </List.Item>

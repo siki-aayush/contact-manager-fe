@@ -98,7 +98,9 @@ const ContactForm = (props: ContactFormInterface) => {
         name="nest-messages"
         onFinish={onFinish}
         validateMessages={validateMessages}
-        initialValues={props.initialValues ? props.initialValues : {}}
+        initialValues={
+          props.update ? props.initialValues : { phone: { short: "NP" } }
+        }
         className="contact-form"
         size="large"
       >

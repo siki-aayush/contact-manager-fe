@@ -28,7 +28,7 @@ function App() {
     (state: RootState) => state.auth.isUserLoggedIn
   );
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Routes>
         <Route path="/contacts" element={<AuthRoute />}>
           <Route path="/contacts" element={<ContactList />} />
