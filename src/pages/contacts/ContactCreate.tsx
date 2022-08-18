@@ -1,4 +1,4 @@
-import { Space, Spin, Typography } from "antd";
+import { Typography } from "antd";
 import { useState } from "react";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import Loading from "../../hoc/Loading";
